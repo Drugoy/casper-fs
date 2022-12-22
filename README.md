@@ -23,6 +23,7 @@ generate your custom kernel module to protect your secret files. The low-level p
 * The resource to turn to visible any invisible file.
 * The resource to protect any file in the file system to prevent writing and removal.
 * The resource to unprotect any file writing and remove proper permission.
+* Communication by device char
 * Persistence recipes with scripts, to always up Casper-fs when you boot the system.
 
 ## Video demo:

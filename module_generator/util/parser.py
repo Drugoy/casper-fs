@@ -13,7 +13,7 @@ def random_function_name():
 
 def code_junk_gen():
  ops = {"x+=1","x-=1","x*=1","x+=2","x+=y","y++","y-=1","y+=1"}
- code = "int x=0,y=0;\n"
+ code = "volatile int x=0,y=0;\n"
  count = 0
  while count<=4:
   ops = random.sample(ops,len(ops))

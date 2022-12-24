@@ -17,7 +17,7 @@ void CODE_GEN_FUNC_NAME2 (void);
 /* Junk code generator macros */
 void CODE_GEN_FUNC_NAME1 (void)
 {
-	int counter=0;
+	volatile int counter=0;
 	JUNK_CODE_1
 
 		while(counter!=5)
@@ -29,7 +29,7 @@ void CODE_GEN_FUNC_NAME1 (void)
 
 void CODE_GEN_FUNC_NAME2 (void)
 {
-	int counter=0;
+	volatile int counter=0;
 	JUNK_CODE_2
 
 		while(counter!=4)

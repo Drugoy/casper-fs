@@ -11,160 +11,160 @@ MODULE_DESCRIPTION("Casperfs - Custom LKM to protect secret resources on file sy
 MODULE_AUTHOR("CoolerVoid <coolerlair@gmail.com>");
 MODULE_LICENSE("GPL");
 MODULE_VERSION("0.3");
-void fez7htym2vb (void);
-void fglx4cjb7fl (void);
+void fk4pwd9oucq (void);
+void fp7rfl2lkgj (void);
 
 /* Junk code generator macros */
-void ftqo97a3fu5 (void)
+void fiexdmkru4e (void)
 {
-	int counter=0;
-	int x=0,y=0;
-	y+=1;
-	x+=2;
-	x+=y;
-	x-=1;
-	x+=1;
-	y-=1;
-	y++;
-	x*=1;
-	y++;
-	x+=2;
-	x+=y;
-	x-=1;
-	y+=1;
-	x+=1;
-	x*=1;
-	y-=1;
-	y++;
-	x+=2;
-	y-=1;
-	x+=y;
-	x*=1;
-	x-=1;
-	y+=1;
-	x+=1;
-	x-=1;
+	volatile int counter=0;
+	volatile int x=0,y=0;
 	y++;
 	y-=1;
 	x+=y;
-	y+=1;
+	x*=1;
+	x+=2;
 	x+=1;
-	x*=1;
-	x+=2;
-	x+=2;
-	x*=1;
+	x-=1;
 	y+=1;
 	x+=1;
 	y-=1;
-	x-=1;
+	x*=1;
+	x+=2;
+	y+=1;
 	x+=y;
+	x-=1;
+	y++;
+	y-=1;
+	y+=1;
+	x-=1;
+	x*=1;
+	x+=1;
+	x+=y;
+	x+=2;
+	y++;
+	x+=1;
+	x+=y;
+	y++;
+	x+=2;
+	x-=1;
+	y-=1;
+	y+=1;
+	x*=1;
+	x*=1;
+	x+=2;
+	x+=y;
+	x+=1;
+	y-=1;
+	x-=1;
+	y+=1;
 	y++;
 
 
 		while(counter!=5)
 		{
-			fglx4cjb7fl();
+			fp7rfl2lkgj();
 			counter++;
 		}
 }
 
-void fglx4cjb7fl (void)
+void fp7rfl2lkgj (void)
 {
-	int counter=0;
-	int x=0,y=0;
+	volatile int counter=0;
+	volatile int x=0,y=0;
+	y-=1;
 	y+=1;
 	x-=1;
 	x+=y;
-	y-=1;
-	y++;
-	x+=2;
-	x+=1;
 	x*=1;
+	y++;
+	x+=1;
 	x+=2;
 	x+=y;
+	y-=1;
+	x+=1;
+	y++;
 	y+=1;
+	x*=1;
+	x+=2;
 	x-=1;
-	x*=1;
-	x+=1;
-	y++;
+	x-=1;
 	y-=1;
+	x+=2;
+	y++;
 	x+=y;
 	y+=1;
-	y++;
+	x*=1;
 	x+=1;
-	y-=1;
-	x-=1;
-	x+=2;
 	x*=1;
 	x-=1;
-	y+=1;
-	x*=1;
-	y++;
-	x+=2;
 	x+=y;
 	x+=1;
-	y-=1;
-	x+=y;
-	x+=2;
-	x+=1;
 	y+=1;
-	y++;
 	y-=1;
+	y++;
+	x+=2;
+	y+=1;
+	x+=1;
+	x+=2;
 	x*=1;
+	x+=y;
+	y-=1;
+	y++;
 	x-=1;
 
 
 		while(counter!=4)
 		{
-			fez7htym2vb();
+			fk4pwd9oucq();
 			counter++;
 		}
 }
 
 
-void fez7htym2vb (void)
+void fk4pwd9oucq (void)
 {
-	int x=0,y=0;
+	volatile int x=0,y=0;
+	x+=2;
+	x+=1;
+	x*=1;
+	x-=1;
+	y-=1;
+	y++;
+	y+=1;
+	x+=y;
+	x-=1;
+	x+=2;
+	y++;
+	x+=1;
 	x*=1;
 	y+=1;
 	y-=1;
-	y++;
-	x-=1;
-	x+=y;
-	x+=1;
-	x+=2;
-	x+=1;
 	x+=y;
 	y-=1;
-	x*=1;
 	x+=2;
-	y++;
-	x-=1;
 	y+=1;
+	x+=1;
+	x-=1;
 	y++;
 	x*=1;
-	x+=1;
+	x+=y;
 	x+=y;
 	x+=2;
-	x-=1;
-	y-=1;
-	y+=1;
-	y-=1;
-	x+=1;
-	x+=y;
 	y+=1;
 	x*=1;
-	x-=1;
 	y++;
-	x+=2;
-	x+=2;
+	y-=1;
+	x+=1;
+	x-=1;
+	x+=1;
 	y+=1;
+	x*=1;
 	x+=y;
 	y-=1;
-	x-=1;
-	x*=1;
-	x+=1;
 	y++;
+	x+=2;
+	x-=1;
 
 
 }
@@ -176,7 +176,7 @@ static int fh_init(void)
 	int error = 0,err = 0;
 	dev_t devt = 0;
 
-	ftqo97a3fu5();
+	fiexdmkru4e();
 
  	err=start_hook_resources();
 

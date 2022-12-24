@@ -1,6 +1,5 @@
 #include <linux/ftrace.h>
 #include <linux/kallsyms.h>
-#include <linux/delay.h>
 #include <linux/syscalls.h>
 #include <linux/kernel.h>
 #include <linux/linkage.h>
@@ -11,9 +10,7 @@
 #include <linux/kprobes.h>
 #include <linux/delay.h>
 #include <linux/kthread.h>
-#include <linux/kernel.h>
 #include <asm/signal.h>
-#include <linux/delay.h>
 #include <linux/sched.h>
 #include <linux/sched/signal.h>
 #include <linux/fcntl.h>
@@ -27,7 +24,7 @@
 #include <linux/fs.h>
 
 
-MODULE_DESCRIPTION("CASPER_MODULE_NAME Version 0.2 - Module to turn a private file in hidden. The second function is to protect a confidential file to prevent reading, writing and removal.");
+MODULE_DESCRIPTION("CASPER_MODULE_NAME Version 0.3 - Module to turn a private file in hidden. The second function is to protect a confidential file to prevent reading, writing and removal.");
 MODULE_AUTHOR("CoolerVoid <coolerlair@gmail.com>");
 MODULE_LICENSE("Dual BSD/GPL");
 
@@ -74,11 +71,15 @@ static unsigned long lookup_name(const char *name)
 	struct kprobe kp = {
 		.symbol_name = name
 	};
+
 	unsigned long retval;
 
-	if (register_kprobe(&kp) < 0) return 0;
+		if (register_kprobe(&kp) < 0) 
+			return 0;
+
 	retval = (unsigned long) kp.addr;
 	unregister_kprobe(&kp);
+
 	return retval;
 }
 #else
@@ -119,10 +120,11 @@ static int fh_resolve_hook_address(struct ftrace_hook *hook)
 {
 	hook->address = lookup_name(hook->name);
 
-	if (!hook->address) {
-		pr_debug("unresolved symbol: %s\n", hook->name);
-		return -ENOENT;
-	}
+		if (!hook->address) 
+		{
+			pr_debug("unresolved symbol: %s\n", hook->name);
+			return -ENOENT;
+		}
 
 #if USE_FENTRY_OFFSET
 	*((unsigned long*) hook->original) = hook->address + MCOUNT_INSN_SIZE;
@@ -142,8 +144,8 @@ static void notrace fh_ftrace_thunk(unsigned long ip, unsigned long parent_ip,
 #if USE_FENTRY_OFFSET
 	regs->ip = (unsigned long)hook->function;
 #else
-	if (!within_module(parent_ip, THIS_MODULE))
-		regs->ip = (unsigned long)hook->function;
+		if (!within_module(parent_ip, THIS_MODULE))
+			regs->ip = (unsigned long)hook->function;
 #endif
 }
 
@@ -170,13 +172,14 @@ static char *get_filename(const char __user *filename)
 	char *kernel_filename=NULL;
 
 	kernel_filename = kmalloc(4096, GFP_KERNEL);
-	if (!kernel_filename)
-		return NULL;
+		if (!kernel_filename)
+			return NULL;
 
-	if (strncpy_from_user(kernel_filename, filename, 4096) < 0) {
-		kfree(kernel_filename);
-		return NULL;
-	}
+		if (strncpy_from_user(kernel_filename, filename, 4096) < 0) 
+		{
+			kfree(kernel_filename);
+			return NULL;
+		}
 
 	return kernel_filename;
 }
@@ -195,25 +198,27 @@ static asmlinkage long fh_sys_write(struct pt_regs *regs)
 	signum = SIGKILL;
 	task = current;
 
-	if (task->pid == target_pid)
-	{
-		if (regs->di == target_fd)
+		if (task->pid == target_pid)
 		{
-			pr_info("write done by process %d to target file.\n", task->pid);
-			memset(&info, 0, sizeof(struct kernel_siginfo));
-			info.si_signo = signum;
-			ret = send_sig_info(signum, &info, task);
+			if (regs->di == target_fd)
+			{
+				pr_info("write done by process %d to target file.\n", task->pid);
+				memset(&info, 0, sizeof(struct kernel_siginfo));
+				info.si_signo = signum;
+				ret = send_sig_info(signum, &info, task);
+
 					if (ret < 0)
 					{
-					  printk(KERN_INFO "error sending signal\n");
+						printk(KERN_INFO "error sending signal\n");
 					}
 					else 
 					{
 						printk(KERN_INFO "Target has been killed\n");
 						return 0;
 					}
+			}
 		}
-	}
+
 	ret = real_sys_write(regs);
 
 	return ret;
@@ -231,14 +236,15 @@ static asmlinkage long fh_sys_write(unsigned int fd, const char __user *buf,
 	int signum = SIGKILL, ret 0;
 	task = current;
 
-	if (task->pid == target_pid)
-	{
-		if (fd == target_fd)
+		if (task->pid == target_pid)
 		{
-			pr_info("write done by process %d to target file.\n", task->pid);
-			memset(&info, 0, sizeof(struct kernel_siginfo));
-			info.si_signo = signum;
-			ret = send_sig_info(signum, &info, task);
+			if (fd == target_fd)
+			{
+				pr_info("write done by process %d to target file.\n", task->pid);
+				memset(&info, 0, sizeof(struct kernel_siginfo));
+				info.si_signo = signum;
+				ret = send_sig_info(signum, &info, task);
+
 					if (ret < 0)
 					{
 					  printk(KERN_INFO "error sending signal\n");
@@ -248,17 +254,19 @@ static asmlinkage long fh_sys_write(unsigned int fd, const char __user *buf,
 						printk(KERN_INFO "Target has been killed\n");
 						return 0;
 					}
+			}
 		}
-	}
 	
 
 	pr_info("Path debug %s\n", buf);
 	char tmp_path=get_filename(buf);
-	if (check_fs_blocklist(tmp_path))
-	{
-		kfree(tmp_path);
-		return NULL;
-	}
+
+		if (check_fs_blocklist(tmp_path))
+		{
+			kfree(tmp_path);
+			return NULL;
+		}
+		
 	ret = real_sys_write(fd, buf, count);
 
 
@@ -279,18 +287,18 @@ static asmlinkage long fh_sys_openat(struct pt_regs *regs)
 	kernel_filename = get_filename((void*) regs->si);
        //https://elixir.bootlin.com/linux/v4.19-rc2/source/include/linux/kernel.h
 
-	if (check_fs_blocklist(kernel_filename))
-	{
-		pr_info("our file is opened by process with id: %d\n", task->pid);
-		pr_info("opened file : %s\n", kernel_filename);
-		kfree(kernel_filename);
-		ret = real_sys_openat(regs);
-		pr_info("fd returned is %ld\n", ret);
-		target_fd = ret;
-		target_pid = task->pid;
-		return 0;
-		
-	}
+		if (check_fs_blocklist(kernel_filename))
+		{
+			pr_info("our file is opened by process with id: %d\n", task->pid);
+			pr_info("opened file : %s\n", kernel_filename);
+			kfree(kernel_filename);
+			ret = real_sys_openat(regs);
+			pr_info("fd returned is %ld\n", ret);
+			target_fd = ret;
+			target_pid = task->pid;
+			
+			return 0;	
+		}
 
 	kfree(kernel_filename);
 	ret = real_sys_openat(regs);
@@ -311,19 +319,18 @@ static asmlinkage long fh_sys_openat(int dfd, const char __user *filename,
 
 	kernel_filename = get_filename(filename);
 
-	if (check_fs_blocklist(kernel_filename))
-	{
-		pr_info("our file is opened by process with id: %d\n", task->pid);
-		pr_info("blocked opened file : %s\n", filename);
-		kfree(kernel_filename);
-		ret = real_sys_openat(dfd, filename, flags, mode);
-		pr_info("fd returned is %ld\n", ret);
-		target_fd = ret;
-		target_pid = task->pid;
-		ret=0;
-		return ret;
-		
-	}
+		if (check_fs_blocklist(kernel_filename))
+		{
+			pr_info("our file is opened by process with id: %d\n", task->pid);
+			pr_info("blocked opened file : %s\n", filename);
+			kfree(kernel_filename);
+			ret = real_sys_openat(dfd, filename, flags, mode);
+			pr_info("fd returned is %ld\n", ret);
+			target_fd = ret;
+			target_pid = task->pid;
+			ret=0;
+			return ret;	
+		}
 
 	kfree(kernel_filename);
 
@@ -343,15 +350,13 @@ static asmlinkage long fh_sys_unlinkat (struct pt_regs *regs)
  	long ret=0;
  	char *kernel_filename = get_filename((void*) regs->si);
 
-         if (check_fs_blocklist(kernel_filename))
-	{
-
-		pr_info("blocked to not remove file : %s\n", kernel_filename);
-		ret=0;
-		kfree(kernel_filename);
-		return ret;
-
-	}
+	        if (check_fs_blocklist(kernel_filename))
+		{
+			pr_info("blocked to not remove file : %s\n", kernel_filename);
+			ret=0;
+			kfree(kernel_filename);
+			return ret;
+		}
 
 	kfree(kernel_filename);
 	ret = real_sys_unlinkat(regs);
@@ -368,16 +373,14 @@ static asmlinkage long fh_sys_unlinkat (int dirfd, const char __user *filename, 
 	char *kernel_filename = get_filename(filename);
 
 
-	if (check_fs_blocklist(kernel_filename))
-	{
-
-		kfree(kernel_filename);
-		pr_info("blocked to not remove file : %s\n", kernel_filename);
-		ret=0;
-		kfree(kernel_filename);
-		return ret;
-
-	}
+		if (check_fs_blocklist(kernel_filename))
+		{
+			kfree(kernel_filename);
+			pr_info("blocked to not remove file : %s\n", kernel_filename);
+			ret=0;
+			kfree(kernel_filename);
+			return ret;
+		}
 
 	kfree(kernel_filename);
 	ret = real_sys_unlinkat(dirfd,filename, flags);
@@ -391,55 +394,57 @@ static asmlinkage long (*real_sys_getdents64)(const struct pt_regs *);
 
 static asmlinkage int fh_sys_getdents64(const struct pt_regs *regs)
 {
-    struct linux_dirent64 __user *dirent = (struct linux_dirent64 *)regs->si;
-    struct linux_dirent64 *previous_dir, *current_dir, *dirent_ker = NULL;
-    unsigned long offset = 0;
-    int ret = real_sys_getdents64(regs);
+	struct linux_dirent64 __user *dirent = (struct linux_dirent64 *)regs->si;
+	struct linux_dirent64 *previous_dir, *current_dir, *dirent_ker = NULL;
+	unsigned long offset = 0;
+	long error;
 
-    dirent_ker = kzalloc(ret, GFP_KERNEL);
+	int ret = real_sys_getdents64(regs);
 
-    if ( (ret <= 0) || (dirent_ker == NULL) )
-        return ret;
+    	dirent_ker = kzalloc(ret, GFP_KERNEL);
 
-    long error;
-    error = copy_from_user(dirent_ker, dirent, ret);
+    		if ( (ret <= 0) || (dirent_ker == NULL) )
+        		return ret;
 
-    if(error)
-        goto done;
+    	error = copy_from_user(dirent_ker, dirent, ret);
 
-    while (offset < ret)
-    {
-        current_dir = (void *)dirent_ker + offset;
+		if(error)
+        		goto done;
 
-        if ( check_fs_hidelist(current_dir->d_name)) 
-        {
+		while (offset < ret)
+    		{
+ 	       		current_dir = (void *)dirent_ker + offset;
+
+	        	if ( check_fs_hidelist(current_dir->d_name)) 
+       	 		{
     
-            if( current_dir == dirent_ker )
-            {
+            			if( current_dir == dirent_ker )
+            			{
       
-                ret -= current_dir->d_reclen;
-                memmove(current_dir, (void *)current_dir + current_dir->d_reclen, ret);
-                continue;
-            }
+					ret -= current_dir->d_reclen;
+                			memmove(current_dir, (void *)current_dir + current_dir->d_reclen, ret);
+                			continue;
+            			}
 
-            previous_dir->d_reclen += current_dir->d_reclen;
-        }
-        else
-        {
+            			previous_dir->d_reclen += current_dir->d_reclen;
+        		}
+        		else
+        		{
 
-            previous_dir = current_dir;
-        }
+            			previous_dir = current_dir;
+        		}	
 
-        offset += current_dir->d_reclen;
-    }
+        		offset += current_dir->d_reclen;
+    		}
 
-    error = copy_to_user(dirent, dirent_ker, ret);
-    if(error)
-        goto done;
+    	error = copy_to_user(dirent, dirent_ker, ret);
+
+    		if(error)
+        		goto done;
 
 done:
-    kfree(dirent_ker);
-    return ret;
+    	kfree(dirent_ker);
+    	return ret;
 }
 
 
@@ -468,8 +473,9 @@ static int start_hook_resources(void)
 {
 	int err;
 	err = fh_install_hooks(demo_hooks, ARRAY_SIZE(demo_hooks));
-	if (err)
-		return err;
+
+		if (err)
+			return err;
 	return 0;
 }
 

@@ -1,9 +1,31 @@
 import os
 import yaml
+import random
+import string
 import argparse
 from util import file_op
 from termcolor import colored
 from util import custom_validator
+
+def random_function_name():
+ chars = string.ascii_lowercase + string.digits
+ return "f"+''.join(random.choice(chars) for _ in range(10)) 
+
+def code_junk_gen():
+ ops = {"x+=1","x-=1","x*=1","x+=2","x+=y","y++","y-=1","y+=1"}
+ code = "volatile int x=0,y=0;\n"
+ count = 0
+ while count<=4:
+  ops = random.sample(ops,len(ops))
+  for line in ops:
+   code += "\t"+str(line)+";\n"
+  count += 1
+ return code
+
+
+def banner():
+ reset = '\033[0m'
+ yellow = '\033[93m'
 
 def banner():
     print("\t____ ____ ____ ___  ____ ____    ____ ____") 
@@ -14,7 +36,7 @@ def banner():
     print(colored(logo,'white',attrs=['blink']) )
     file.close()     
     print(colored("\tCasper-fs is a Custom Hidden Linux Kernel Module generator. Each module works in the file system to protect and hide secret files.",'yellow'))
-    print(colored("\tVersion 0.2 coded by CoolerVoid - github.com/CoolerVoid/casper-fs",'cyan'))
+    print(colored("\tVersion 0.3 coded by CoolerVoid - github.com/CoolerVoid/casper-fs",'cyan'))
     print ("\tExample to use:")
     print ("\tpython3 Casper-fs.py --rules rules/my_secret_files.yaml\n")
 
@@ -93,6 +115,13 @@ def start_generator(rules_fs):
  main_file=template_content_main
  main_file=main_file.replace("CASPER_MODULE_NAME",v['module_name'])
  main_file=main_file.replace("CASPER_FAKE_DEVICE",v['fake_device_name'])
+ # random junk code generator
+ main_file = main_file.replace("CODE_GEN_FUNC_NAME1", random_function_name())
+ main_file = main_file.replace("CODE_GEN_FUNC_NAME2", random_function_name())
+ main_file = main_file.replace("CODE_GEN_FUNC_NAME3", random_function_name())
+ main_file = main_file.replace("JUNK_CODE_1", code_junk_gen())
+ main_file = main_file.replace("JUNK_CODE_2", code_junk_gen())
+ main_file = main_file.replace("JUNK_CODE_3", code_junk_gen())
  # hooked.c
  hooked_file=template_content_hooked
  hooked_file=hooked_file.replace("CASPER_HIDE",v['hide_module_key'])

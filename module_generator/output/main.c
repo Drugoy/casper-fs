@@ -10,16 +10,176 @@
 MODULE_DESCRIPTION("Casperfs - Custom LKM to protect secret resources on file system.");
 MODULE_AUTHOR("CoolerVoid <coolerlair@gmail.com>");
 MODULE_LICENSE("GPL");
-MODULE_VERSION("0.2");
+MODULE_VERSION("0.3");
+void fk4pwd9oucq (void);
+void fp7rfl2lkgj (void);
+
+/* Junk code generator macros */
+void fiexdmkru4e (void)
+{
+	volatile int counter=0;
+	volatile int x=0,y=0;
+	y++;
+	y-=1;
+	x+=y;
+	x*=1;
+	x+=2;
+	x+=1;
+	x-=1;
+	y+=1;
+	x+=1;
+	y-=1;
+	x*=1;
+	x+=2;
+	y+=1;
+	x+=y;
+	x-=1;
+	y++;
+	y-=1;
+	y+=1;
+	x-=1;
+	x*=1;
+	x+=1;
+	x+=y;
+	x+=2;
+	y++;
+	x+=1;
+	x+=y;
+	y++;
+	x+=2;
+	x-=1;
+	y-=1;
+	y+=1;
+	x*=1;
+	x*=1;
+	x+=2;
+	x+=y;
+	x+=1;
+	y-=1;
+	x-=1;
+	y+=1;
+	y++;
+
+
+		while(counter!=5)
+		{
+			fp7rfl2lkgj();
+			counter++;
+		}
+}
+
+void fp7rfl2lkgj (void)
+{
+	volatile int counter=0;
+	volatile int x=0,y=0;
+	y-=1;
+	y+=1;
+	x-=1;
+	x+=y;
+	x*=1;
+	y++;
+	x+=1;
+	x+=2;
+	x+=y;
+	y-=1;
+	x+=1;
+	y++;
+	y+=1;
+	x*=1;
+	x+=2;
+	x-=1;
+	x-=1;
+	y-=1;
+	x+=2;
+	y++;
+	x+=y;
+	y+=1;
+	x*=1;
+	x+=1;
+	x*=1;
+	x-=1;
+	x+=y;
+	x+=1;
+	y+=1;
+	y-=1;
+	y++;
+	x+=2;
+	y+=1;
+	x+=1;
+	x+=2;
+	x*=1;
+	x+=y;
+	y-=1;
+	y++;
+	x-=1;
+
+
+		while(counter!=4)
+		{
+			fk4pwd9oucq();
+			counter++;
+		}
+}
+
+
+void fk4pwd9oucq (void)
+{
+	volatile int x=0,y=0;
+	x+=2;
+	x+=1;
+	x*=1;
+	x-=1;
+	y-=1;
+	y++;
+	y+=1;
+	x+=y;
+	x-=1;
+	x+=2;
+	y++;
+	x+=1;
+	x*=1;
+	y+=1;
+	y-=1;
+	x+=y;
+	y-=1;
+	x+=2;
+	y+=1;
+	x+=1;
+	x-=1;
+	y++;
+	x*=1;
+	x+=y;
+	x+=y;
+	x+=2;
+	y+=1;
+	x*=1;
+	y++;
+	y-=1;
+	x+=1;
+	x-=1;
+	x+=1;
+	y+=1;
+	x*=1;
+	x+=y;
+	y-=1;
+	y++;
+	x+=2;
+	x-=1;
+
+
+}
 
 
 static int fh_init(void)
 {
-    struct device *fake_device;
-    int error = 0,err = 0;
-    dev_t devt = 0;
+	struct device *fake_device;
+	int error = 0,err = 0;
+	dev_t devt = 0;
 
-	err=start_hook_resources();
+	fiexdmkru4e();
+
+ 	err=start_hook_resources();
+
 		if(err)
 			pr_info("Problem in hook functions");
 
@@ -27,42 +187,43 @@ static int fh_init(void)
 	tidy();
 
    /* Get a range of minor numbers (starting with 0) to work with */
-    error = alloc_chrdev_region(&devt, 0, 1, "usb15");
+    	error = alloc_chrdev_region(&devt, 0, 1, "usb15");
 
-    if (error < 0) 
-	{
-        	pr_err("Can't get major number\n");
-        	return error;
-    }
+    		if (error < 0) 
+		{
+        		pr_err("Can't get major number\n");
+        		return error;
+    		}
 
-    major = MAJOR(devt);
+    	major = MAJOR(devt);
 
     /* Create device class, visible in /sys/class */
-    fake_class = class_create(THIS_MODULE, "custom_char_class");
+    	fake_class = class_create(THIS_MODULE, "custom_char_class");
 
-    	if (IS_ERR(fake_class)) {
-        	unregister_chrdev_region(MKDEV(major, 0), 1);
-        	return PTR_ERR(fake_class);
-    	}
+    		if (IS_ERR(fake_class)) 
+		{
+        		unregister_chrdev_region(MKDEV(major, 0), 1);
+        		return PTR_ERR(fake_class);
+    		}
 
     /* Initialize the char device and tie a file_operations to it */
-    cdev_init(&fake_cdev, &fake_fops);
-    fake_cdev.owner = THIS_MODULE;
+    	cdev_init(&fake_cdev, &fake_fops);
+    	fake_cdev.owner = THIS_MODULE;
     /* Now make the device live for the users to access */
-    cdev_add(&fake_cdev, devt, 1);
+    	cdev_add(&fake_cdev, devt, 1);
 
-    fake_device = device_create(fake_class,
+    	fake_device = device_create(fake_class,
                                 NULL,   /* no parent device */
                                 devt,    /* associated dev_t */
                                 NULL,   /* no additional data */
                                 "usb15");  /* device name */
 
-    if (IS_ERR(fake_device)) 
-	{
-        	class_destroy(fake_class);
-        	unregister_chrdev_region(devt, 1);
-        	return -1;
-    }
+    		if (IS_ERR(fake_device)) 
+		{
+        		class_destroy(fake_class);
+        		unregister_chrdev_region(devt, 1);
+        		return -1;
+    		}
 
 
 	return 0;

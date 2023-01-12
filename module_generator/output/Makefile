@@ -2,7 +2,7 @@ CONFIG_MODULE_SIG=n
 PWD := $(shell pwd)
 CC := gcc
 KERNEL_PATH ?= /lib/modules/$(shell uname -r)/build
-ccflags-y	+= -Wall -Wdeclaration-after-statement
+ccflags-y	+= -Wall -Wdeclaration-after-statement -Wno-unused-variable -Wno-unused-function
 
 obj-m += casperfs.o
 casperfs-objs := main.o hooked.o 
